@@ -1,0 +1,8 @@
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm upgrade --install rc bitnami/redis-cluster -n redis --create-namespace
+export REDIS_PASSWORD=$(kubectl get secret --namespace "redis" rc-redis-cluster -o jsonpath="{.data.redis-password}" | base64 -d)
+kubectl run --namespace redis rc-redis-cluster-client --restart='Never'  --env REDIS_PASSWORD=$REDIS_PASSWORD --image docker.io/bitnami/redis-cluster:7.0.4-debian-11-r4 -- sleep infinity
+kubectl exec --tty -i rc-redis-cluster-client --namespace redis -- bash
+
+REDIS_CLI_AUTH="${REDIS_PASSWORD}" redis-cli -c -h rc-ris-cluster
+rc-redis-cluster:6379> 

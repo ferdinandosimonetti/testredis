@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -5,6 +6,19 @@ metadata:
   namespace: redis
 spec:
   clusterIP: None # "None" make it a headless service. No cluster IP.
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: redis
+  selector:
+    app: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: red
+  namespace: redis
+spec:
   ports:
   - port: 6379
     targetPort: 6379
