@@ -1,0 +1,28 @@
+---
+kind: RedisCluster
+apiVersion: redis.redis.opstreelabs.in/v1beta1
+metadata:
+  name: testcluster
+spec:
+  clusterSize: 3
+  persistenceEnabled: true
+  kubernetesConfig:
+    image: quay.io/opstree/redis:v6.2
+    resources:
+      requests:
+        cpu: 101m
+        memory: 128Mi
+      limits:
+        cpu: 101m
+        memory: 128Mi
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: default
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
+  securityContext:
+    runAsUser: 1000
+    fsGroup: 1000
